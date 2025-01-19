@@ -12,25 +12,18 @@ import { formatDistanceToNow } from 'date-fns'
 import { useKnowledgeBase } from '@/lib/hooks/use-knowledge-base'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 
-export default function ReportPage({
-  params,
-}: {
-  params: Promise<{ id: string }> | { id: string }
-}) {
+export default function ReportPage({ params }: any) {
   const router = useRouter()
   const { reports, deleteReport } = useKnowledgeBase()
   const [report, setReport] = useState<KnowledgeBaseReport | null>(null)
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false)
 
-  // Handle both Promise and direct object cases
-  const resolvedParams = params instanceof Promise ? React.use(params) : params
-
   useEffect(() => {
-    const foundReport = reports.find((r) => r.id === resolvedParams.id)
+    const foundReport = reports.find((r) => r.id === params.id)
     if (foundReport) {
       setReport(foundReport)
     }
-  }, [resolvedParams.id, reports])
+  }, [params.id, reports])
 
   const handleDelete = () => {
     if (!report) return
@@ -46,7 +39,8 @@ export default function ReportPage({
             <AlertTriangle className='h-4 w-4' />
             <AlertTitle>Report Not Found</AlertTitle>
             <AlertDescription>
-              The report you&apos;re looking for doesn&apos;t exist or has been deleted.
+              The report you&apos;re looking for doesn&apos;t exist or has been
+              deleted.
             </AlertDescription>
           </Alert>
           <div className='mt-4 text-center'>
